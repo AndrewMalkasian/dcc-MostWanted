@@ -3,44 +3,54 @@
 Build all of your functions for displaying and gathering information below (GUI).
 */
 
-function searchByTraits (people){
-  let userInput = promptFor("Search by traits: Eye Color (e) , Height (h), Weight (w), DoB, Occupation (o)", chars);
+
+function searchByTraits (people, searchResults, heightSearchResults, weightSearchResults, birthResults, occupationResults){
+    let userInput = promptFor("Search by traits: Eye Color (e) , Height (h), Weight (w), DoB(d), Occupation (o) | Quit(q) or Restart(r)", chars);
+    searchResults;
+    heightSearchResults;
+    weightSearchResults;
+    birthResults;
+    occupationResults; 
     switch(userInput){
-      case "1":
-        let searchResults = searchByEyeColor(people);
-        console.log(searchResults);
+      case "e":
+        searchResults = searchByEyeColor(people);
         return searchResults;
         break;
-      case "2":
-        let searchResults = searchByHeight(people);
-        console.log(searchResults);
-        return searchResults;
+      case "g": 
+        genderResults = searchByGender(people);
+        return genderResults;
         break;
-      case "3":
-        let searchResults = searchByWeight(people);
-        console.log(searchResults);
-        return searchResults;
+      case "h":
+        heightSearchResults = searchByHeight(people);
+        return heightSearchResults;
         break;
-      case "4":
-      let searchResults = searchByDOB(people);
-        console.log(searchResults);
-        return searchResults;
-      case "5":
-       let searchResults = searchByOccupation(people);
-       console.log(searchResults);
-       return searchResults;
+      case "w":
+        weightSearchResults = searchByWeight(people);
+        return weightSearchResults;
+        break;
+      case "d":
+        birthResults = searchByDOB(people);
+        return birthResults;
+        break;
+      case "o":
+       occupationResults = searchByOccupation(people);
+       return occupationResults;
+       break;
+       case"r": 
+        searchByTraits(people);
+       break;
+       case"q":
        break;
         default:
           app(people);
           break;
     }
+ }
 
-}
+  //additional parameters if needed
 
-//additional parameters if needed
-
-function searchByEyeColor (people){
-  let userInput = promptFor ("Please enter eye color?", chars);
+function searchByEyeColor (people, userInput){
+  userInput = promptFor ("Please enter eye color?", chars);
   let traitArray = people.filter(function(person){
       if (person.eyeColor.toLowerCase() === userInput.toLowerCase()){
         return true;
@@ -52,9 +62,22 @@ function searchByEyeColor (people){
       return traitArray;
 }     
 
-function searchByHeight (people){
-  let userInput = promptFor ("Please enter their height?", chars);
+function searchByGender (people, userInput){
+  userInput = promptFor ("Please enter eye color?", chars);
   let traitArray = people.filter(function(person){
+      if (person.gender.toLowerCase() === userInput.toLowerCase()){
+        return true;
+      }
+      else{
+        return false;
+      }
+  });
+      return traitArray;
+}     
+
+function searchByHeight(people, userInput){
+  userInput = promptFor ("Please enter their height.", chars);
+ let traitArray = people.filter(function(person){
       if (person.height == userInput){
         return true;
       }
@@ -65,9 +88,9 @@ function searchByHeight (people){
       return traitArray;
 }     
 function searchByWeight (people){
-  let userInput = promptFor ("Please enter their height?, If unknown, enter 'n/a'", chars);
+  let userInput = promptFor ("Please enter their height.", chars);
   let traitArray = people.filter(function(person){
-      if (person.weight == userInput){
+      if (person.weight === userInput){
         return true;
       }
       else{
@@ -79,7 +102,7 @@ function searchByWeight (people){
 function searchByOccupation(people){
   let userInput = promptFor("Please enter their height?, If unknown, enter 'n/a'", chars);
   let traitArray = people.filter(function(person){
-      if (person.occupation.toLowerCase() == userInput.toLowerCase()){
+      if (person.occupation.toLowerCase() === userInput.toLowerCase()){
         return true;
       }
       else{
@@ -108,30 +131,33 @@ function displayPeople(people){
 
 
 // app is the function called to start the entire application
-function app(people){
+function app(people, searchResults, heightSearchResults, weightSearchResults, birthResults, occupationResults){
 let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
-let searchResults;
+
+let totalSearchResults = people;
   switch(searchType){
     case 'yes':
-      searchResults = searchByName(people);
-
+      totalSearchResults = searchByName(people);
       break;
-      case 'no':
-      searchResults = searchByTraits(people);
-
+    case 'no':
+      while(totalSearchResults.length > 1) {
+        totalSearchResults = searchByTraits(totalSearchResults);
+      }
       break;
-      default:
-        
+    default:
       // TODO: search by traits
     app(people); // restart app
       break;
   }
    // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  if (searchResults === 1){
-  mainMenu(searchResults, people);
+   if (totalSearchResults.length === 1) {
+    mainMenu(totalSearchResults)
+ 
   }
-  else{
-    return app(people);
+  else if ( totalSearchResults.length === 0){
+    displayPeople(heightSearchResults);
+    alert("nobody matches that search.")
+    app(people);
   }
 }
   // TODO: find the person using the name they entered
@@ -240,7 +266,7 @@ function chars(input){
 
 
 
-
+ x
 //------------------------------------------------------------------------------------------------------//
 
 // function displayPerson (person){
