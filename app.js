@@ -181,7 +181,7 @@ function mainMenu(person, people){
   switch(displayOption){
   
     case "info":
-      displayPerson(person);
+    displayPerson(person);
     
     break;
     case "family":
@@ -190,6 +190,9 @@ function mainMenu(person, people){
     break;
     case "descendants":
     // TODO: get person's descendants
+    // let descendants = findingDescendants (person[0], people);
+    // displayPeople(descendants);
+    displayPeople(listDescendants(person, people, 0), "DESCENDANTS: \n\n");
     break;
     case "restart":
     app(people); // restart
@@ -275,7 +278,36 @@ function listPeopleAsString(people){
   return string;
 }
 
+// function searchForDescendants(person, people) {
 
+// }
+
+// function findingDescendants (person, people, children = []){
+//     for (let i = 0; i < people.length; i++) {
+//         if(people[i].parents.includes(person.id)){
+//             children.push(people[i]); 
+//             findingDescendants (people[i], people, children);
+//         }
+//     }
+//     return children;
+// }
+
+function listDescendants(person, people){
+
+let descendants = [];
+
+  for(let i = 0; i < people.length; i++){
+    if(people[i].parents.includes(person.id)){
+      descendants.push(people[i]);
+    }
+  }
+
+  for(let i = 0; i < descendants.length; i++){
+    descendants = descendants.concat(listDescendants(descendants[i], people));
+  }
+
+    return descendants;
+}
 
 // alerts a list of people
 function displayPeople(people){
