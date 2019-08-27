@@ -40,6 +40,7 @@ function searchByTraits (people, searchResults, heightSearchResults, weightSearc
         searchByTraits(people);
        break;
        case"q":
+       alert("Even though you didn't find what you were looking for, please give us a good grade.");
        break;
         default:
           app(people);
@@ -63,7 +64,7 @@ function searchByEyeColor (people, userInput){
 }     
 
 function searchByGender (people, userInput){
-  userInput = promptFor ("Please enter gender?", chars);
+  userInput = promptFor ("Please enter gender? (only male or female works in this database)", chars);
   let traitArray = people.filter(function(person){
       if (person.gender.toLowerCase() === userInput.toLowerCase()){
         return true;
@@ -76,7 +77,7 @@ function searchByGender (people, userInput){
 }     
 
 function searchByHeight(people, userInput){
-  userInput = promptFor ("Please enter their height.", chars);
+  userInput = promptFor ("Please enter how insecure they are (their height).", chars);
  let traitArray = people.filter(function(person){
       if (person.height == userInput){
         return true;
@@ -88,7 +89,7 @@ function searchByHeight(people, userInput){
       return traitArray;
 }     
 function searchByWeight (people){
-  let userInput = promptFor ("Please enter their height.", chars);
+  let userInput = promptFor ("Please enter how fat they are (their weight).", chars);
   let traitArray = people.filter(function(person){
       if (person.weight === userInput){
         return true;
@@ -100,7 +101,7 @@ function searchByWeight (people){
       return traitArray;
 }     
 function searchByOccupation(people){
-  let userInput = promptFor("Please enter their height?, If unknown, enter 'n/a'", chars);
+  let userInput = promptFor("Please enter how society judges them (their occupation)", chars);
   let traitArray = people.filter(function(person){
       if (person.occupation.toLowerCase() === userInput.toLowerCase()){
         return true;
@@ -112,7 +113,7 @@ function searchByOccupation(people){
       return traitArray;
 }     
 function searchByDOB (people){
-  let userInput = promptFor ("Please enter their date of birth?, If unknown, enter 'n/a'.", chars);
+  let userInput = promptFor ("Please enter how sore they are when they wake up in the morning (their dob).", chars);
   let traitArray = people.filter(function(person){
       if (person.dob == userInput){ 
         return true;
@@ -182,17 +183,17 @@ function mainMenu(person, people){
   
     case "info":
     displayPerson(person);
-    
-    break;
+    return mainMenu(person, people);
     case "family":
-    // TODO: get person's family
+    // TODO: get person's 
     alert("FAMILY: \n\n" + listFamily(person, people));
+    return mainMenu(person, people);
     break;
     case "descendants":
     // TODO: get person's descendants
-    // let descendants = findingDescendants (person[0], people);
-    // displayPeople(descendants);
-    displayPeople(listDescendants(person, people, 0), "DESCENDANTS: \n\n");
+    let descendants = findingDescendants (person[0], people); 
+    displayPeople(descendants);
+    return mainMenu(person, people);
     break;
     case "restart":
     app(people); // restart
@@ -278,19 +279,16 @@ function listPeopleAsString(people){
   return string;
 }
 
-// function searchForDescendants(person, people) {
 
-// }
-
-// function findingDescendants (person, people, children = []){
-//     for (let i = 0; i < people.length; i++) {
-//         if(people[i].parents.includes(person.id)){
-//             children.push(people[i]); 
-//             findingDescendants (people[i], people, children);
-//         }
-//     }
-//     return children;
-// }
+function findingDescendants (person, people, children = []){
+    for (let i = 0; i < people.length; i++) {
+        if(people[i].parents.includes(person.id)){
+            children.push(people[i]); 
+            findingDescendants (people[i], people, children);
+        }
+    }
+    return children;
+}
 
 function listDescendants(person, people){
 
