@@ -37,7 +37,7 @@ function searchByTraits (people, searchResults, heightSearchResults, weightSearc
        return occupationResults;
        break;
        case"r": 
-        searchByTraits(people);
+       return searchByTraits(people);
        break;
        case"q":
        alert("Even though you didn't find what you were looking for, please give us a good grade.");
@@ -132,7 +132,7 @@ function displayPeople(people){
 
 
 // app is the function called to start the entire application
-function app(people, searchResults, heightSearchResults, weightSearchResults, birthResults, occupationResults){
+function app(people, person, searchResults, heightSearchResults, weightSearchResults, birthResults, occupationResults){
 let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
 
 let totalSearchResults = people;
@@ -143,6 +143,8 @@ let totalSearchResults = people;
     case 'no':
       while(totalSearchResults.length > 1) {
         totalSearchResults = searchByTraits(totalSearchResults);
+        displayPeople(totalSearchResults);
+        alert("We'll need more information to catch the bad guy( or wahman)");
       }
       break;
     default:
